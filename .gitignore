@@ -1,3 +1,18 @@
+
+*.idea
+*.log
+**/target
+**/*.iml
+*.classpath
+*.project
+*.settings
+**/test/
+**/*.bak
+*.iml
+**/log4j.xml
+**/upload/
+**/rebel.xml
+
 # Compiled class file
 *.class
 
