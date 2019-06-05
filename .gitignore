@@ -7,11 +7,13 @@
 *.project
 *.settings
 **/test/
+**/bin/
 **/*.bak
 *.iml
 **/log4j.xml
 **/upload/
 **/rebel.xml
+**/.gitee
 
 # Compiled class file
 *.class
