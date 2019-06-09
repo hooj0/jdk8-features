@@ -13,8 +13,18 @@ package io.github.hooj0.functional;
  */
 public class FunctionalInterfaces {
 
+	// @FunctionalInterface 省略也是有效的
+	@FunctionalInterface
+	interface Converter<F, T> {
+		T convert(F from);
+	}
+	
 	public static void main(String[] args) {
 
+		// lambda 实现 converter接口
+		Converter<String, Integer> convter = (from) -> Integer.parseInt(from);
+		Integer num = convter.convert("123");
+		System.out.println(num);
 	}
 
 }
