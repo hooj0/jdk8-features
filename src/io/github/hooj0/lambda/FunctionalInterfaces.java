@@ -1,4 +1,4 @@
-package io.github.hooj0.functional;
+package io.github.hooj0.lambda;
 
 /**
  * 函数式接口编程
