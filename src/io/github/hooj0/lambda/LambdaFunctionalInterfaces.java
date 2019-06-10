@@ -1,6 +1,7 @@
 package io.github.hooj0.lambda;
 
 /**
+ * lambda interface expression example
  * 函数式接口编程
  * @author hoojo
  * @createDate 2019年6月8日 上午10:52:52
@@ -11,7 +12,7 @@ package io.github.hooj0.lambda;
  * @email hoojo_@126.com
  * @version 1.0
  */
-public class FunctionalInterfaces {
+public class LambdaFunctionalInterfaces {
 
 	// @FunctionalInterface 省略也是有效的
 	@FunctionalInterface
