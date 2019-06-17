@@ -1,7 +1,7 @@
 package io.github.hooj0.lambda;
 
 /**
- * <b>function:</b>
+ * default interface Lambda example
  * @author hoojo
  * @createDate 2019年6月15日 上午10:38:52
  * @file LambdaDefaultInterfaceExample.java
