@@ -14,7 +14,7 @@ package io.github.hooj0.lambda;
  */
 public class LambdaConstructorsExample {
 
-	static class User {
+	public static class User {
 		String name;
 		int age;
 		
