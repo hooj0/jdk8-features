@@ -21,6 +21,7 @@ public class FunctionsExample {
 		Function<String, Integer> convter = Integer::valueOf;
 		System.out.println(convter.apply("123") + 2); // 125
 		
+		// andThen 在 convter 的函数执行后再执行
 		Function<String, String> rollback = convter.andThen(String::valueOf);
 		System.out.println(rollback.apply("123")); // 123
 		
