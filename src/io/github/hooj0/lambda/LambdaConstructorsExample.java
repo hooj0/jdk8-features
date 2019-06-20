@@ -15,10 +15,12 @@ package io.github.hooj0.lambda;
 public class LambdaConstructorsExample {
 
 	public static class User {
-		String name;
-		int age;
+		public String name;
+		public int age;
 		
-		User(String name, int age) {
+		public User() {}
+		
+		public User(String name, int age) {
 			this.name = name;
 			this.age = age;
 		}
