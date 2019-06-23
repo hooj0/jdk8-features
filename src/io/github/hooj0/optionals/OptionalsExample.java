@@ -1,4 +1,4 @@
-package io.github.hooj0.built_in_functional;
+package io.github.hooj0.optionals;
 
 import java.util.Optional;
 
