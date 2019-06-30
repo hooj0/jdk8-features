@@ -41,5 +41,15 @@ public class MapsExample {
 		System.out.println(map.containsKey(9));     // true
 		map.computeIfPresent(9, (num, val) -> null);
 		System.out.println(map.containsKey(9));     // false
+		
+		// 如果不存在就执行添加
+		map.computeIfAbsent(233, num -> "val" + num);
+		System.out.println(map.containsKey(233));    // true
+		System.out.println(map.get(233));			// val233
+
+		// 如果存在就用之前的数据
+		System.out.println(map.containsKey(233));    // true
+		map.computeIfAbsent(233, num -> "666"); 	// 666 没有被添加进去
+		System.out.println(map.get(233));			// val233
 	}
 }
