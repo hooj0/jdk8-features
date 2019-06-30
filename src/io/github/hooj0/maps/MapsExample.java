@@ -29,6 +29,9 @@ public class MapsExample {
 		// for each接受一个消费者为映射的每个值执行操作
 		map.forEach((id, val) -> System.out.println(val));
 		
+		// ---------------------------------------------------------------------
+		// 添加或修改键值对数据
+		
 		// 如果存在就执行remappingFunction，并填充修改后的数据
 		map.computeIfPresent(3, (num, val) -> num + val);
 		System.out.println(map.get(3)); // 3val3
@@ -51,5 +54,22 @@ public class MapsExample {
 		System.out.println(map.containsKey(233));    // true
 		map.computeIfAbsent(233, num -> "666"); 	// 666 没有被添加进去
 		System.out.println(map.get(233));			// val233
+		System.out.println();
+		
+		// ---------------------------------------------------------------------
+		// 如何删除给定键的条目，前提是它当前映射到给定值
+		map.remove(3, "val3"); // 删除的值不存在，未删除成功
+		System.out.println(map.get(3)); // 3val3
+		
+		map.remove(3, "3val3"); // 成功删除
+		System.out.println(map.get(3)); // null
+		
+		// ---------------------------------------------------------------------
+		// 获取默认值
+		System.out.println(map.getOrDefault(3, "not exist")); // not exist
+		
+		// ---------------------------------------------------------------------
+		// not exist
+		
 	}
 }
