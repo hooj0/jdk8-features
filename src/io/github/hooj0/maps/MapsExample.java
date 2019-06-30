@@ -67,9 +67,14 @@ public class MapsExample {
 		// ---------------------------------------------------------------------
 		// 获取默认值
 		System.out.println(map.getOrDefault(3, "not exist")); // not exist
+		System.out.println();
 		
 		// ---------------------------------------------------------------------
-		// not exist
+		// 合并数据
+		map.merge(5, "#new-val5", (val, newVal) -> val + newVal); // 存在就合并
+		System.out.println(map.get(5)); // val5#new-val5
 		
+		map.merge(567, "#merge", (val, newVal) -> val + newVal); // 不存在就添加
+		System.out.println(map.get(567)); // #merge
 	}
 }
