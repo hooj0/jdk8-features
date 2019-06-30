@@ -36,5 +36,10 @@ public class MapsExample {
 		// 333 不存在，故为 null
 		map.computeIfPresent(333, (num, val) -> num + val);
 		System.out.println(map.get(333)); // null
+		
+		// 设为空值，相当于删除
+		System.out.println(map.containsKey(9));     // true
+		map.computeIfPresent(9, (num, val) -> null);
+		System.out.println(map.containsKey(9));     // false
 	}
 }
