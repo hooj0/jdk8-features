@@ -76,5 +76,19 @@ public class MapsExample {
 		
 		map.merge(567, "#merge", (val, newVal) -> val + newVal); // 不存在就添加
 		System.out.println(map.get(567)); // #merge
+		
+		// ---------------------------------------------------------------------
+		// 修改数据
+		map.replace(1, "abc1"); // 存在就替换
+		System.out.println(map.get(1)); // abc1
+		
+		map.replace(111, "abc1"); // 不存在就不能替换
+		System.out.println(map.get(111)); // null
+		
+		map.replace(1, "abc1", "abc123"); // 根据k/v替换值
+		System.out.println(map.get(1)); // abc123
+		
+		map.replace(1, "abc2", "abc222"); // 根据k/v替换值，不存在就不替换
+		System.out.println(map.get(1)); // abc222
 	}
 }
