@@ -2,7 +2,10 @@ package io.github.hooj0.date;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 
 /**
  * date localtime example
@@ -36,5 +39,12 @@ public class DateLocalTimeExample {
 		
 		System.out.println(ChronoUnit.HOURS.between(localTime1, localTime2)); // -4 
 		System.out.println(ChronoUnit.MINUTES.between(localTime1, localTime2)); // -299
+		
+		LocalTime time = LocalTime.of(23, 59, 59);
+		System.out.println(time); // 23:59:59
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.GERMAN);
+		LocalTime chainTime = LocalTime.parse("15:33", formatter);
+		System.out.println(chainTime); // 15:33
 	}
 }
