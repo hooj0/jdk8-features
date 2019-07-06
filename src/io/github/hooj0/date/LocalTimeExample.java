@@ -11,14 +11,14 @@ import java.util.Locale;
  * date localtime example
  * @author hoojo
  * @createDate 2019年7月3日 上午11:33:00
- * @file DateLocalTimeExample.java
+ * @file LocalTimeExample.java
  * @package io.github.hooj0.date
  * @project jdk8-features
  * @blog http://hoojo.cnblogs.com
  * @email hoojo_@126.com
  * @version 1.0
  */
-public class DateLocalTimeExample {
+public class LocalTimeExample {
 
 	public static void main(String[] args) {
 
