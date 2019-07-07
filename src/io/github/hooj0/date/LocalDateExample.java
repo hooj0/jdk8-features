@@ -3,7 +3,10 @@ package io.github.hooj0.date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 
 /**
  * date api local date example
@@ -33,6 +36,8 @@ public class LocalDateExample {
 		System.out.println(independenceDay); // 2014-07-04
 		System.out.println(week); // FRIDAY
 		
-		
+		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.GERMAN);
+		LocalDate date = LocalDate.parse("24.12.2014", formatter);
+		System.out.println(date); // 2014-12-24
 	}
 }
