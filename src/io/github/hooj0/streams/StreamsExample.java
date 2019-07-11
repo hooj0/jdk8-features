@@ -1,7 +1,6 @@
 package io.github.hooj0.streams;
 
 import java.util.Arrays;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -21,6 +20,8 @@ public class StreamsExample {
 
 	public static void main(String[] args) {
 
+		// 操作方式
+		// ----------------------------------------------------------
 		// list
 		Arrays.asList(1, 2, 3)
 				.stream()
@@ -32,6 +33,9 @@ public class StreamsExample {
 			.findFirst()
 			.ifPresent(System.out::println); // 1
 		
+		
+		// 不同种类的流
+		// ----------------------------------------------------------
 		// IntStream, LongStream and DoubleStream.
 		IntStream.range(1, 5).forEach(System.out::print); // 1234
 		
@@ -53,6 +57,32 @@ public class StreamsExample {
 				.mapToObj(n -> n + "1,") // 转对象
 				.forEach(System.out::print); // 11,21,31,
 		
-		//
+		// stream
+		Stream.of(1.0d, 2.0d, 3.0d)
+			.mapToInt(Double::intValue) // 转int
+			.mapToObj(n -> "/a" + n) // 转对象
+			.forEach(System.out::print); // /a1/a2/a3
+		
+		
+		// 处理数据
+		// ----------------------------------------------------------
+		Stream.of("d2", "a2", "b1", "b3", "c")
+				.filter(s -> {
+					System.out.println("filter: " + s);
+					return true;
+				}).forEach(System.out::println);
+		
+		Stream.of("d2", "a2", "b1", "b3", "c")
+		.filter(s -> {
+			return s.length() < 2;
+		}).forEach(System.out::println); // c
+		
+		
+		Stream.of("d2", "a2", "b1", "b3", "c")
+		.map(s -> {
+			return s.toUpperCase();
+		}).anyMatch(s -> {
+			return s.startsWith("B");
+		});
 	}
 }
