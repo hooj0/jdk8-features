@@ -35,7 +35,6 @@ public class AnnotationsExample {
 	@Hint("hint_a")
 	@Hint("hint_b")
 	class User {
-		
 	}
 	
 	public static void main(String[] args) {
