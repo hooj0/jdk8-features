@@ -1,6 +1,9 @@
 package io.github.hooj0.streams;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -73,16 +76,71 @@ public class StreamsExample {
 				}).forEach(System.out::println);
 		
 		Stream.of("d2", "a2", "b1", "b3", "c")
-		.filter(s -> {
-			return s.length() < 2;
-		}).forEach(System.out::println); // c
+			.filter(s -> {
+				return s.length() < 2;
+			}).forEach(System.out::println); // c
 		
 		
 		Stream.of("d2", "a2", "b1", "b3", "c")
-		.map(s -> {
-			return s.toUpperCase();
-		}).anyMatch(s -> {
-			return s.startsWith("B");
-		});
+			.map(s -> {
+				return s.toUpperCase();
+			}).anyMatch(s -> {
+				return s.startsWith("B");
+			});
+		
+		
+		Stream.of("d2", "a2", "b1", "b3", "c")
+		    .filter(s -> {
+		        System.out.println("filter: " + s);
+		        return s.startsWith("a");
+		    })
+		    .sorted((s1, s2) -> {
+		        System.out.printf("sort: %s; %s\n", s1, s2);
+		        return s1.compareTo(s2);
+		    })
+		    .map(s -> {
+		        System.out.println("map: " + s);
+		        return s.toUpperCase();
+		    })
+		    .forEach(s -> System.out.println("forEach: " + s));
+		
+		
+		Stream<String> stream = Stream.of("d2", "a2", "b1", "b3").filter(s -> s.startsWith("b"));
+		
+		System.out.println(stream.anyMatch(s -> true)); // true
+		// System.out.println(stream.noneMatch(s -> true)); // Exception, 为了避免异常使用下面的方法
+		
+		Supplier<Stream<String>> supplier = () -> Stream.of("d2", "a2", "b1", "b3").filter(s -> s.startsWith("b"));
+		System.out.println(supplier.get().anyMatch(s -> true)); // true
+		System.out.println(supplier.get().noneMatch(s -> true)); // false
+		
+		// 高级操作
+		// ----------------------------------------------------------
+		class Person {
+		    String name;
+		    int age;
+
+		    Person(String name, int age) {
+		        this.name = name;
+		        this.age = age;
+		    }
+
+		    @Override
+		    public String toString() {
+		        return name;
+		    }
+		}
+
+		
+		List<Person> persons = Arrays.asList(
+			new Person("Max", 18),
+	        new Person("Peter", 23),
+	        new Person("Pamela", 23),
+	        new Person("David", 12));
+		
+		List<Person> filtered = persons.stream().filter(p -> p.name.startsWith("P")).collect(Collectors.toList());
+		System.out.println(filtered); // [Peter, Pamela]
+		
+		
 	}
 }
