@@ -1,6 +1,7 @@
 package io.github.hooj0.streams;
 
 import java.util.Arrays;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -152,5 +153,13 @@ public class StreamsExample {
 		// 求平均年龄
 		Double averageAge = persons.stream().collect(Collectors.averagingDouble(p -> p.age));
 		System.out.println(averageAge); // 19.0
+		
+		// 更多统计  min, max, average, sum and count.
+		IntSummaryStatistics statistics = persons.stream().collect(Collectors.summarizingInt(p -> p.age));
+		System.out.println(statistics); // IntSummaryStatistics{count=4, sum=76, min=12, average=19.000000, max=23}
+		
+		// 拼接字符串
+		String names = persons.stream().filter(p -> p.age > 18).map(p -> p.name).collect(Collectors.joining(" 和 ", "人员 ", " 符合年龄要求."));
+		System.out.println(names); // 人员 Peter 和 Pamela 符合年龄要求.
 	}
 }
