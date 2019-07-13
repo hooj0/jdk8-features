@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -166,5 +168,18 @@ public class StreamsExample {
 		// Map<Integer, String> personMap = persons.stream().collect(Collectors.toMap(p -> p.age, p -> p.name));
 		Map<Integer, String> personMap = persons.stream().collect(Collectors.toMap(p -> p.age, p -> p.name, (v1, v2) -> v1 + "/" + v2));
 		System.out.println(personMap); // {18=Max, 23=Peter/Pamela, 12=David}
+		
+		// 构建自定义 Collector
+		Collector<Person, StringJoiner, String> collector = Collector.of(
+				() -> new StringJoiner(" | "), // supplier
+				(j, p) -> j.add(p.name.toUpperCase()), // accumulator 
+				(j1, j2) -> j1.merge(j2), // combiner
+				StringJoiner::toString // characteristics
+				);
+		
+		names = persons.stream().collect(collector);
+		System.out.println(names); // MAX | PETER | PAMELA | DAVID
+		
+		
 	}
 }
