@@ -2,6 +2,7 @@ package io.github.hooj0.streams;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -138,9 +139,18 @@ public class StreamsExample {
 	        new Person("Pamela", 23),
 	        new Person("David", 12));
 		
-		List<Person> filtered = persons.stream().filter(p -> p.name.startsWith("P")).collect(Collectors.toList());
+		// 过滤一部分组合成新的集合
+		List<Person> filtered = persons.stream()
+				.filter(p -> p.name.startsWith("P"))
+				.collect(Collectors.toList()); // Collectors.toMap / toSet
 		System.out.println(filtered); // [Peter, Pamela]
 		
+		// 根据年龄进行分组
+		Map<Integer, List<Person>> map = persons.stream().collect(Collectors.groupingBy(p -> p.age));
+		System.out.println(map); // {18=[Max], 23=[Peter, Pamela], 12=[David]}
 		
+		// 求平均年龄
+		Double averageAge = persons.stream().collect(Collectors.averagingDouble(p -> p.age));
+		System.out.println(averageAge); // 19.0
 	}
 }
