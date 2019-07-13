@@ -161,5 +161,10 @@ public class StreamsExample {
 		// 拼接字符串
 		String names = persons.stream().filter(p -> p.age > 18).map(p -> p.name).collect(Collectors.joining(" 和 ", "人员 ", " 符合年龄要求."));
 		System.out.println(names); // 人员 Peter 和 Pamela 符合年龄要求.
+		
+		// 转换map，不唯一的key将引发 IllegalStateException: Duplicate key Peter 
+		// Map<Integer, String> personMap = persons.stream().collect(Collectors.toMap(p -> p.age, p -> p.name));
+		Map<Integer, String> personMap = persons.stream().collect(Collectors.toMap(p -> p.age, p -> p.name, (v1, v2) -> v1 + "/" + v2));
+		System.out.println(personMap); // {18=Max, 23=Peter/Pamela, 12=David}
 	}
 }
