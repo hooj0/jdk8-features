@@ -1,4 +1,4 @@
-package io.github.hooj0.streams;
+package io.github.hooj0.streams.samples;
 
 import java.util.Arrays;
 import java.util.IntSummaryStatistics;
@@ -23,7 +23,7 @@ import java.util.stream.Stream;
  * @email hoojo_@126.com
  * @version 1.0
  */
-public class StreamsExample {
+public class StreamsSample {
 
 	public static void main(String[] args) {
 
@@ -179,7 +179,5 @@ public class StreamsExample {
 		
 		names = persons.stream().collect(collector);
 		System.out.println(names); // MAX | PETER | PAMELA | DAVID
-		
-		
 	}
 }
