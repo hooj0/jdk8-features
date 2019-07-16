@@ -52,7 +52,27 @@ public class StreamsComplexSample {
 				.forEach(b -> System.out.println(b.name));
 	}
 	
+	// 为了解析外部实例的内部字符串foo，必须添加多个空检查以防止可能的NullPointerExceptions:
+	public static void testFlatMapCheckNull() {
+		
+		// 检查
+		Outer outer = new Outer();
+		if (outer != null && outer.nested != null && outer.nested.inner != null) {
+		    System.out.println(outer.nested.inner.foo);
+		}
+		
+		// 流检查
+		Optional.of(new Outer())
+				.flatMap(o -> Optional.ofNullable(o.nested))
+				.flatMap(n -> Optional.ofNullable(n.inner))
+				.flatMap(i -> Optional.ofNullable(i.foo))
+				.ifPresent(System.out::println);
+	}
 	
+	// 
+	public static void testReduce() {
+		
+	}
 	
 	public static void main(String[] args) {
 		testFlatMap();
