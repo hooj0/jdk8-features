@@ -1,6 +1,7 @@
 package io.github.hooj0.streams.samples;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -69,15 +70,38 @@ public class StreamsComplexSample {
 				.ifPresent(System.out::println);
 	}
 	
-	// 
+	
+	// 还原操作将流的所有元素组合为一个结果
 	public static void testReduce() {
 		
+		List<Person> persons = Arrays.asList(
+				new Person("Max", 18),
+		        new Person("Peter", 23),
+		        new Person("Pamela", 23),
+		        new Person("David", 12));
+		
+		// 返回年龄最大的人
+		persons.stream().reduce((p1, p2) -> p1.age > p2.age ? p1 : p2).ifPresent(System.out::println);
+		
+		// reduce方法接受binaryOperator累加器函数
+		Person person = persons.stream().reduce(new Person("", 0), (p1, p2) -> {
+			p1.age += p2.age;
+			p1.name += p2.name;
+			return p1;
+		});
+		System.out.println(person.age); // 76
+		
+		// sum
+		int age = persons.stream().reduce(0, (sum, p) -> sum += p.age, (sum1, sum2) -> sum1 + sum2);
+		System.out.println(age); // 76
 	}
 	
 	public static void main(String[] args) {
 		testFlatMap();
 		
 		testFlatMapCheckNull();
+		
+		testReduce();
 	}
 	
 	static class Outer {
@@ -91,6 +115,8 @@ public class StreamsComplexSample {
 	class Inner {
 	    String foo;
 	}
+	
+	
 	
 	static class Foo {
 	    String name;
@@ -106,6 +132,22 @@ public class StreamsComplexSample {
 
 	    Bar(String name) {
 	        this.name = name;
+	    }
+	}
+	
+	
+	static class Person {
+	    String name;
+	    int age;
+
+	    Person(String name, int age) {
+	        this.name = name;
+	        this.age = age;
+	    }
+
+	    @Override
+	    public String toString() {
+	        return name;
 	    }
 	}
 }
