@@ -94,6 +94,51 @@ public class StreamsComplexSample {
 		// sum
 		int age = persons.stream().reduce(0, (sum, p) -> sum += p.age, (sum1, sum2) -> sum1 + sum2);
 		System.out.println(age); // 76
+		
+		Integer ageSum = persons
+			    .stream()
+			    .reduce(0,
+			        (sum, p) -> {
+			            System.out.format("accumulator: sum=%s; person=%s\n", sum, p);
+			            return sum += p.age;
+			        },
+			        (sum1, sum2) -> {
+			            System.out.format("combiner: sum1=%s; sum2=%s\n", sum1, sum2);
+			            return sum1 + sum2;
+			        });
+		System.out.println(ageSum);
+		
+		// accumulator: sum=0; person=Max
+		// accumulator: sum=18; person=Peter
+		// accumulator: sum=41; person=Pamela
+		// accumulator: sum=64; person=David
+		
+		ageSum = persons
+			    .parallelStream()
+			    .reduce(0,
+			        (sum, p) -> {
+			            System.out.format("accumulator: sum=%s; person=%s\n", sum, p);
+			            return sum += p.age;
+			        },
+			        (sum1, sum2) -> {
+			            System.out.format("combiner: sum1=%s; sum2=%s\n", sum1, sum2);
+			            return sum1 + sum2;
+			        });
+		System.out.println(ageSum);
+		/*
+		accumulator: sum=0; person=Pamela
+		accumulator: sum=0; person=David
+		accumulator: sum=0; person=Max
+		accumulator: sum=0; person=Peter
+		combiner: sum1=23; sum2=12
+		combiner: sum1=18; sum2=23
+		combiner: sum1=41; sum2=35
+		*/
+	}
+	
+	
+	public static void testParallelStreams() {
+		
 	}
 	
 	public static void main(String[] args) {
@@ -102,6 +147,8 @@ public class StreamsComplexSample {
 		testFlatMapCheckNull();
 		
 		testReduce();
+		
+		testParallelStreams();
 	}
 	
 	static class Outer {
