@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
 /**
@@ -138,7 +139,44 @@ public class StreamsComplexSample {
 	
 	
 	public static void testParallelStreams() {
+		ForkJoinPool commonPool = ForkJoinPool.commonPool();
+		// 底层线程池的大小最多使用五个线程，具体取决于可用物理CPU核心的数量。
+		System.out.println(commonPool.getParallelism()); // 7
 		
+		// 在jvm中配置线程池数量
+		// -Djava.util.concurrent.ForkJoinPool.common.parallelism=5
+		
+		// 并行流使用公共ForkJoinPool中的所有可用线程来执行流操作。
+		// 由于实际使用特定线程的行为是不确定的，因此输出可能在连续运行中有所不同。
+		Arrays.asList("a1", "a2", "b1", "c2", "c1")
+				.parallelStream()
+				.filter(s -> {
+					System.out.format("filter: %s [%s]\n", s, Thread.currentThread().getName());
+					return true;
+				})
+				.map(s -> {
+					System.out.format("map: %s [%s]\n", s, Thread.currentThread().getName());
+					return s.toUpperCase();
+				})
+				.forEach(s -> System.out.format("forEach: %s [%s]\n", s, Thread.currentThread().getName()));
+		
+		/*
+		filter: a2 [ForkJoinPool.commonPool-worker-2]
+		filter: c1 [ForkJoinPool.commonPool-worker-3]
+		map: c1 [ForkJoinPool.commonPool-worker-3]
+		filter: c2 [ForkJoinPool.commonPool-worker-4]
+		map: c2 [ForkJoinPool.commonPool-worker-4]
+		forEach: C2 [ForkJoinPool.commonPool-worker-4]
+		filter: a1 [ForkJoinPool.commonPool-worker-1]
+		filter: b1 [main]
+		map: a1 [ForkJoinPool.commonPool-worker-1]
+		forEach: C1 [ForkJoinPool.commonPool-worker-3]
+		map: a2 [ForkJoinPool.commonPool-worker-2]
+		forEach: A1 [ForkJoinPool.commonPool-worker-1]
+		map: b1 [main]
+		forEach: B1 [main]
+		forEach: A2 [ForkJoinPool.commonPool-worker-2]
+		*/
 	}
 	
 	public static void main(String[] args) {
