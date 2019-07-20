@@ -21,6 +21,13 @@ import java.util.stream.IntStream;
  */
 public class StreamsComplexSample {
 
+	private static List<Person> persons = Arrays.asList(
+			new Person("Max", 18),
+	        new Person("Peter", 23),
+	        new Person("Pamela", 23),
+	        new Person("David", 12));
+	
+	
 	// 将一个对象转换成多个其他对象
 	public static void testFlatMap() {
 		List<Foo> list = new ArrayList<>();
@@ -74,12 +81,6 @@ public class StreamsComplexSample {
 	
 	// 还原操作将流的所有元素组合为一个结果
 	public static void testReduce() {
-		
-		List<Person> persons = Arrays.asList(
-				new Person("Max", 18),
-		        new Person("Peter", 23),
-		        new Person("Pamela", 23),
-		        new Person("David", 12));
 		
 		// 返回年龄最大的人
 		persons.stream().reduce((p1, p2) -> p1.age > p2.age ? p1 : p2).ifPresent(System.out::println);
@@ -176,6 +177,73 @@ public class StreamsComplexSample {
 		map: b1 [main]
 		forEach: B1 [main]
 		forEach: A2 [ForkJoinPool.commonPool-worker-2]
+		*/
+		
+		System.out.println("-----------------------------------");
+		
+		// 似乎排序只在主线程上按顺序执行。实际上，并行流上的排序使用引擎盖下的新Java 8方法数组.RealSoReSt*()。
+		// 如JavaDoc中所述，如果排序将按顺序或并行方式执行，则此方法将决定数组的长度：
+		Arrays.asList("a1", "a2", "b1", "c2", "c1")
+		.parallelStream()
+		.filter(s -> {
+			System.out.format("filter: %s [%s]\n", s, Thread.currentThread().getName());
+			return true;
+		})
+		.map(s -> {
+			System.out.format("map: %s [%s]\n", s, Thread.currentThread().getName());
+			return s.toUpperCase();
+		})
+		.sorted((s1, s2) -> {
+	        System.out.format("sort: %s <> %s [%s]\n", s1, s2, Thread.currentThread().getName());
+	        return s1.compareTo(s2);
+	    })
+		.forEach(s -> System.out.format("forEach: %s [%s]\n", s, Thread.currentThread().getName()));
+		
+		/*
+		filter: b1 [main]
+		filter: a1 [ForkJoinPool.commonPool-worker-2]
+		map: a1 [ForkJoinPool.commonPool-worker-2]
+		filter: c1 [ForkJoinPool.commonPool-worker-1]
+		filter: c2 [ForkJoinPool.commonPool-worker-4]
+		filter: a2 [ForkJoinPool.commonPool-worker-3]
+		map: a2 [ForkJoinPool.commonPool-worker-3]
+		map: c2 [ForkJoinPool.commonPool-worker-4]
+		map: c1 [ForkJoinPool.commonPool-worker-1]
+		map: b1 [main]
+		sort: A2 <> A1 [main]
+		sort: B1 <> A2 [main]
+		sort: C2 <> B1 [main]
+		sort: C1 <> C2 [main]
+		sort: C1 <> B1 [main]
+		sort: C1 <> C2 [main]
+		forEach: B1 [main]
+		forEach: C1 [ForkJoinPool.commonPool-worker-4]
+		forEach: A1 [ForkJoinPool.commonPool-worker-2]
+		forEach: C2 [ForkJoinPool.commonPool-worker-1]
+		forEach: A2 [ForkJoinPool.commonPool-worker-5]
+		*/
+						
+		System.out.println("------------------------------------");
+		
+		persons.parallelStream()
+	    .reduce(0,
+	        (sum, p) -> {
+	        	System.out.format("accumulator: sum=%s; person=%s [%s]\n", sum, p, Thread.currentThread().getName());
+	            return sum += p.age;
+	        },
+	        (sum1, sum2) -> {
+	        	System.out.format("combiner: sum1=%s; sum2=%s [%s]\n", sum1, sum2, Thread.currentThread().getName());
+	            return sum1 + sum2;
+	        });
+		
+		/*
+		accumulator: sum=0; person=Pamela [main]
+		accumulator: sum=0; person=Max [ForkJoinPool.commonPool-worker-5]
+		accumulator: sum=0; person=Peter [ForkJoinPool.commonPool-worker-1]
+		accumulator: sum=0; person=David [ForkJoinPool.commonPool-worker-3]
+		combiner: sum1=18; sum2=23 [ForkJoinPool.commonPool-worker-1]
+		combiner: sum1=23; sum2=12 [ForkJoinPool.commonPool-worker-3]
+		combiner: sum1=41; sum2=35 [ForkJoinPool.commonPool-worker-3]
 		*/
 	}
 	
