@@ -237,6 +237,9 @@ public class StreamsComplexSample {
 	        });
 		
 		/*
+		控制台输出显示累加器和合并器功能在所有可用线程上并行执行：
+		一些并行流操作（如reduce和collect）需要额外的计算（合并操作），这在按顺序执行时是不需要的。
+		
 		accumulator: sum=0; person=Pamela [main]
 		accumulator: sum=0; person=Max [ForkJoinPool.commonPool-worker-5]
 		accumulator: sum=0; person=Peter [ForkJoinPool.commonPool-worker-1]
